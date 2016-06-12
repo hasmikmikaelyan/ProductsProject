@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ProductsProject.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>Products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("Random", "Products", FormMethod.Get))
+{
+    <div class="form-group">
+        Add products quantity: @Html.TextBox("quan")
+        <input type="submit" value="Add" />
+    </div>
+}
+@using (Html.BeginForm("Index", "Products", FormMethod.Get))
+{
+    <div class="form-group">
+        Find by product name: @Html.TextBox("search", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+            <a href="@Url.Action("Index", new { order = "name_asc", currentFilter = ViewBag.CurrentFilter })">
+                <span class="glyphicon glyphicon-sort-by-attributes"></span>
+            </a>
+            <a href="@Url.Action("Index", new { order = "name_desc", currentFilter = ViewBag.CurrentFilter })">
+                <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+            </a>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+            <a href="@Url.Action("Index", new { order = "price_asc", currentFilter = ViewBag.CurrentFilter })">
+                <span class="glyphicon glyphicon-sort-by-attributes"></span>
+            </a>
+            <a href="@Url.Action("Index", new { order = "price_desc", currentFilter = ViewBag.CurrentFilter })">
+                <span class="glyphicon glyphicon-sort-by-attributes-alt"></span>
+            </a>
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+<br />
+@Html.Partial("_Pager", Model)
